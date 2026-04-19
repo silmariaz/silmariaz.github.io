@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silmeria</title>
+<style>
+:root {
+  --void: #050508;
+  --deep: #08090f;
+  --silver: #c8cdd8;
+  --silver-mid: #6a7080;
+  --silver-faint: rgba(200,205,216,0.12);
+  --text: #e8eaef;
+  --text-dim: #a8aebc;
+  --text-faint: #5a6070;
+  --serif: 'Bodoni 72 Smallcaps', 'Bodoni 72', 'Bodoni MT', Georgia, serif;
+  --mono: 'Courier New', monospace;
+  --chinese: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html, body {
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--serif);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Stars background */
+canvas#stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 540px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--silver-mid);
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeUp 1.6s var(--ease) 0.2s forwards;
+}
+
+.name {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--silver);
+  font-weight: 400;
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: fadeUp 2s var(--ease) 0.5s forwards;
+}
+
+.tagline-zh {
+  font-family: var(--chinese);
+  font-size: 12px;
+  letter-spacing: 0.5em;
+  color: var(--silver-mid);
+  margin-bottom: 4rem;
+  opacity: 0;
+  animation: fadeUp 1.8s var(--ease) 0.9s forwards;
+}
+
+.tagline {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: var(--text-dim);
+  max-width: 420px;
+  margin-bottom: 4rem;
+  opacity: 0;
+  animation: fadeUp 1.8s var(--ease) 1.2s forwards;
+}
+
+.divider {
+  width: 0.5px;
+  height: 50px;
+  background: var(--silver-faint);
+  margin-bottom: 4rem;
+  transform: scaleY(0);
+  transform-origin: top;
+  animation: drawLine 1.4s var(--ease) 1.5s forwards;
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  opacity: 0;
+  animation: fadeUp 1.6s var(--ease) 1.8s forwards;
+}
+
+.section-label::before,
+.section-label::after {
+  content: '';
+  width: 16px;
+  height: 0.5px;
+  background: var(--silver-faint);
+}
+
+.works {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  max-width: 480px;
+}
+
+.work-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 1.8rem 1.5rem;
+  border-bottom: 0.5px solid var(--silver-faint);
+  transition: padding-left 0.6s var(--ease), background 0.4s ease;
+  opacity: 0;
+  animation: fadeUp 1.8s var(--ease) 2.1s forwards;
+}
+.work-card:hover {
+  padding-left: 2rem;
+  background: rgba(200,205,216,0.02);
+}
+.work-card:first-child {
+  border-top: 0.5px solid var(--silver-faint);
+}
+
+.work-title {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.3rem;
+}
+
+.work-zh {
+  font-family: var(--chinese);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--silver-mid);
+  margin-bottom: 0.8rem;
+}
+
+.work-desc {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+.work-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.8rem;
+}
+
+.work-tag {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.work-arr {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--silver-mid);
+  transition: transform 0.4s var(--ease);
+}
+.work-card:hover .work-arr {
+  transform: translateX(4px);
+  color: var(--silver);
+}
+
+footer {
+  margin-top: 6rem;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  opacity: 0;
+  animation: fadeUp 1.6s var(--ease) 2.5s forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); filter: blur(4px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes drawLine {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+@media (max-width: 600px) {
+  .name { font-size: 2.6rem; }
+  .work-title { font-size: 1.15rem; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="content">
+  <p class="eyebrow">Silmeria · Author</p>
+  <h1 class="name">Silmeria</h1>
+  <p class="tagline-zh">观 测 者</p>
+  <p class="tagline">Fan fiction, illustration, and printed works.<br>Quiet stories about the people we keep choosing to see.</p>
+
+  <div class="divider"></div>
+
+  <p class="section-label">Works</p>
+
+  <div class="works">
+
+    <a href="https://silmariaz.github.io/eyes-on-me/" class="work-card">
+      <div class="work-title">Eyes On Me</div>
+      <div class="work-zh">观 测 者</div>
+      <div class="work-desc">An 80,000-word Ne Zha I &amp; II fan fiction. A meditation on observation, free will, and the quiet weight of being seen.</div>
+      <div class="work-meta">
+        <span class="work-tag">Novel · 2026</span>
+        <span class="work-arr">→</span>
+      </div>
+    </a>
+
+    <!-- Add more works here as you create them. Template:
+    <a href="LINK" class="work-card">
+      <div class="work-title">Title</div>
+      <div class="work-zh">中文标题</div>
+      <div class="work-desc">Short description.</div>
+      <div class="work-meta">
+        <span class="work-tag">Type · Year</span>
+        <span class="work-arr">→</span>
+      </div>
+    </a>
+    -->
+
+  </div>
+
+  <footer>Silmeria · 2026</footer>
+</div>
+
+<script>
+// Subtle starry background
+(function(){
+  var c = document.getElementById('stars');
+  if (!c) return;
+  var ctx = c.getContext('2d');
+  var stars = [];
+  function resize() {
+    c.width = window.innerWidth;
+    c.height = window.innerHeight;
+    stars = [];
+    var n = Math.floor((c.width * c.height) / 7000);
+    for (var i = 0; i < n; i++) {
+      stars.push({
+        x: Math.random() * c.width,
+        y: Math.random() * c.height,
+        r: Math.random() * 0.8 + 0.15,
+        a: Math.random() * 0.6 + 0.15,
+        spd: Math.random() * 0.0004 + 0.0001,
+        ph: Math.random() * Math.PI * 2
+      });
+    }
+  }
+  var frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    frame++;
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      var alpha = s.a * (0.6 + 0.4 * Math.sin(frame * s.spd * 60 + s.ph));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(200,205,216,' + alpha + ')';
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+</script>
+
+</body>
+</html>
