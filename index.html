@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="manifest" href="/site.webmanifest" />
-  
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Silmeria</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cormorant+SC:wght@300;400&display=swap" rel="stylesheet">
+
 <style>
 :root {
   --void: #050508;
@@ -20,316 +19,654 @@
   --text: #e8eaef;
   --text-dim: #a8aebc;
   --text-faint: #5a6070;
-  --serif: 'Bodoni 72 Smallcaps', 'Bodoni 72', 'Bodoni MT', Georgia, serif;
+  --serif: 'Cormorant Garamond', 'Cormorant', Georgia, serif;
+  --serif-caps: 'Cormorant SC', 'Cormorant Garamond', Georgia, serif;
   --mono: 'Courier New', monospace;
   --chinese: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 * { margin:0; padding:0; box-sizing:border-box; }
-
 html, body {
   background: var(--void);
   color: var(--text);
   font-family: var(--serif);
-  min-height: 100vh;
+  font-weight: 300;
   overflow-x: hidden;
+  line-height: 1.6;
 }
 
-body {
+/* ─────────────────────────────────
+   SECTION 1 — SILMERIA Intro Hero
+   ───────────────────────────────── */
+.section-intro {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem 2rem;
-  min-height: 100vh;
-  position: relative;
-}
-
-/* Stars background */
-canvas#stars {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.content {
-  position: relative;
-  z-index: 1;
-  max-width: 540px;
+  padding: 6rem 2rem 4rem;
   text-align: center;
+  position: relative;
+}
+.intro-inner {
+  max-width: 640px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0;
 }
-
-.eyebrow {
-  font-family: var(--mono);
-  font-size: 10px;
+.intro-eyebrow {
+  font-family: var(--serif-caps);
+  font-size: 11px;
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--silver-mid);
-  margin-bottom: 3rem;
-  opacity: 0;
-  animation: fadeUp 1.6s var(--ease) 0.2s forwards;
+  margin-bottom: 3.5rem;
+  font-weight: 300;
 }
-
-.name {
+.intro-name {
   font-family: var(--serif);
-  font-size: clamp(3rem, 8vw, 5.5rem);
-  letter-spacing: 0.18em;
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--silver);
-  font-weight: 400;
-  margin-bottom: 1rem;
-  opacity: 0;
-  animation: fadeUp 2s var(--ease) 0.5s forwards;
+  font-weight: 300;
+  margin-bottom: 3rem;
+  padding-left: 0.24em;
+  line-height: 1;
 }
-
-.tagline-zh {
-  font-family: var(--chinese);
-  font-size: 12px;
-  letter-spacing: 0.5em;
-  color: var(--silver-mid);
-  margin-bottom: 4rem;
-  opacity: 0;
-  animation: fadeUp 1.8s var(--ease) 0.9s forwards;
-}
-
-.tagline {
+.intro-tagline {
   font-family: var(--serif);
   font-style: italic;
-  font-size: 1rem;
+  font-weight: 300;
+  font-size: 1.15rem;
   line-height: 1.9;
   color: var(--text-dim);
-  max-width: 420px;
+  max-width: 480px;
   margin-bottom: 4rem;
-  opacity: 0;
-  animation: fadeUp 1.8s var(--ease) 1.2s forwards;
 }
-
-.divider {
+.intro-divider {
   width: 0.5px;
   height: 50px;
   background: var(--silver-faint);
-  margin-bottom: 4rem;
-  transform: scaleY(0);
-  transform-origin: top;
-  animation: drawLine 1.4s var(--ease) 1.5s forwards;
 }
-
-.section-label {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-  margin-bottom: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
+.intro-eyebrow,
+.intro-tagline,
+.intro-divider {
   opacity: 0;
-  animation: fadeUp 1.6s var(--ease) 1.8s forwards;
+  transition: opacity 2.5s ease;
+}
+.intro-fade-in {
+  opacity: 1;
 }
 
-.section-label::before,
-.section-label::after {
-  content: '';
-  width: 16px;
-  height: 0.5px;
-  background: var(--silver-faint);
+/* ─────────────────────────────────
+   SECTION 2 — Hero Image Reveal
+   ───────────────────────────────── */
+.section-hero {
+  position: relative;
+  width: 100%;
+  display: block;
+  background: var(--void);
+}
+#hero-canvas-wrap {
+  position: relative;
+  width: 100%;
+  line-height: 0;
+}
+#hero-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.hero-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2s var(--ease);
+}
+.hero-text.visible { opacity: 1; }
+.hero-zh {
+  font-family: var(--chinese);
+  font-size: clamp(11px, 0.9vw, 12px);
+  letter-spacing: 0.45em;
+  color: var(--silver-mid);
+  text-shadow: 0 0 20px rgba(5,5,8,0.8), 0 0 40px rgba(5,5,8,0.6);
+  margin-bottom: 0.1rem;
+  padding-left: 0.45em;
+}
+.hero-en {
+  font-family: var(--serif);
+  font-size: clamp(16px, 1.8vw, 20px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--silver-mid);
+  text-shadow: 0 0 20px rgba(5,5,8,0.8), 0 0 40px rgba(5,5,8,0.6);
+  padding-left: 0.4em;
 }
 
-.works {
+/* ─────────────────────────────────
+   SECTION 3 — Eyes On Me Work (Saihoji-style)
+   Large symmetric padding matching Saihoji's relaxed feel.
+   ───────────────────────────────── */
+.section-work {
+  padding: 8rem 0 8rem;
+  position: relative;
+  background: var(--void);
+}
+.work-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1800px;
+  margin: 0 auto;
+  align-items: stretch;
+  padding: 0;
+}
+.work-left {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  width: 100%;
-  max-width: 480px;
+  /* 24% from left edge, matching Saihoji */
+  padding-left: 45%;
+  padding-right: 10%;
 }
-
-.work-card {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  padding: 1.8rem 1.5rem;
-  border-bottom: 0.5px solid var(--silver-faint);
-  transition: padding-left 0.6s var(--ease), background 0.4s ease;
-  opacity: 0;
-  animation: fadeUp 1.8s var(--ease) 2.1s forwards;
-}
-.work-card:hover {
-  padding-left: 2rem;
-  background: rgba(200,205,216,0.02);
-}
-.work-card:first-child {
-  border-top: 0.5px solid var(--silver-faint);
-}
-
 .work-title {
   font-family: var(--serif);
-  font-size: 1.3rem;
-  font-weight: 400;
+  font-weight: 300;
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
   color: var(--text);
-  letter-spacing: 0.04em;
-  margin-bottom: 0.3rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin-bottom: 1.2rem;
 }
-
 .work-zh {
   font-family: var(--chinese);
-  font-size: 11px;
-  letter-spacing: 0.3em;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.5em;
   color: var(--silver-mid);
-  margin-bottom: 0.8rem;
+  margin-bottom: 1.5rem;
+  padding-left: 0.5em;
 }
-
 .work-desc {
   font-family: var(--serif);
   font-style: italic;
-  font-size: 0.9rem;
-  line-height: 1.7;
+  font-weight: 300;
+  font-size: 0.85rem;
+  line-height: 1.75;
   color: var(--text-dim);
+  margin-bottom: 2rem;
+  max-width: 320px;
 }
-
-.work-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 0.8rem;
-}
-
 .work-tag {
-  font-family: var(--mono);
-  font-size: 8.5px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-}
-
-.work-arr {
-  font-family: var(--mono);
+  font-family: var(--serif-caps);
   font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
   color: var(--silver-mid);
-  transition: transform 0.4s var(--ease);
-}
-.work-card:hover .work-arr {
-  transform: translateX(4px);
-  color: var(--silver);
 }
 
+/* Right column — button is indented from right, bottom-aligned */
+.work-right {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  /* button starts at 60% = 10% into right column (right col starts at 50%) */
+  padding-left: 17%;
+  padding-right: 10%;
+}
+.work-link-btn {
+  display: inline-block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 0.3rem 3rem;
+  border: 0.5px solid var(--silver-faint);
+  background: rgba(200,205,216,0.06);
+  letter-spacing: 0.02em;
+  transition: all 0.5s var(--ease);
+  min-width: 0;
+  text-align: center;
+}
+.work-link-btn:hover {
+  background: rgba(200,205,216,0.08);
+  color: var(--text);
+  border-color: var(--silver-mid);
+}
+
+/* ─── CHAR-SCATTER ANIMATION (Saihoji-style) ─── */
+/* Each character starts scattered (random offset + scaled up),
+   then settles to final position when scrolled into view. */
+.char-scatter .char {
+  display: inline-block;
+  transition:
+    transform 1.8s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+.char-scatter[data-is-on-screen-once="true"] .char {
+  transform: translate(0, 0) scale(1) !important;
+  opacity: 1;
+}
+
+/* Footer */
 footer {
-  margin-top: 6rem;
-  font-family: var(--mono);
-  font-size: 9px;
+  padding: 3rem 6rem 3rem;
+  font-family: var(--serif-caps);
+  font-size: 10px;
+  font-weight: 300;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--text-faint);
-  opacity: 0;
-  animation: fadeUp 1.6s var(--ease) 2.5s forwards;
+  text-align: center;
+  background: var(--void);
+  border-top: 0.5px solid var(--silver-faint);
 }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); filter: blur(4px); }
-  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+/* ─────────────────────────────────
+   RESPONSIVE
+   ───────────────────────────────── */
+@media (max-width: 900px) {
+/*  .section-work { padding: 5rem 0 6rem; }
+  .work-grid { grid-template-columns: 1fr; gap: 3rem; padding: 0 2rem; }
+  .work-left { padding-left: 0; }
+  .work-right { padding-right: 0; justify-content: flex-start; align-items: flex-start; }*/
+  footer { padding: 2rem 2rem 2rem; }
 }
-
-@keyframes drawLine {
-  from { transform: scaleY(0); }
-  to   { transform: scaleY(1); }
-}
-
 @media (max-width: 600px) {
-  .name { font-size: 2.6rem; }
-  .work-title { font-size: 1.15rem; }
+  .intro-name { font-size: 2.4rem; letter-spacing: 0.18em; }
+  .work-title { font-size: 1.8rem; }
+  .hero-zh { letter-spacing: 0.3em; }
+  .hero-en { letter-spacing: 0.3em; }
+  .work-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .work-left {
+    padding-left: 0;
+    padding-right: 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  .work-right {
+    padding-left: 0;
+    padding-right: 0;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+  }
 }
 </style>
 </head>
 <body>
 
-<canvas id="stars"></canvas>
-
-<div class="content">
-  <p class="eyebrow">Silmeria · Author</p>
-  <h1 class="name">Silmeria</h1>
-  <p class="tagline-zh">观 测 者</p>
-  <p class="tagline">Fan fiction, illustration, and printed works.<br>Quiet stories about the people we keep choosing to see.</p>
-
-  <div class="divider"></div>
-
-  <p class="section-label">Works</p>
-
-  <div class="works">
-
-    <a href="https://silmariaz.github.io/eyes-on-me/" class="work-card">
-      <div class="work-title">Eyes On Me</div>
-      <div class="work-zh">观 测 者</div>
-      <div class="work-desc">An 80,000-word Ne Zha I &amp; II fan fiction. A meditation on observation, free will, and the quiet weight of being seen.</div>
-      <div class="work-meta">
-        <span class="work-tag">Novel · 2026</span>
-        <span class="work-arr">→</span>
-      </div>
-    </a>
-
-    <!-- Add more works here as you create them. Template:
-    <a href="LINK" class="work-card">
-      <div class="work-title">Title</div>
-      <div class="work-zh">中文标题</div>
-      <div class="work-desc">Short description.</div>
-      <div class="work-meta">
-        <span class="work-tag">Type · Year</span>
-        <span class="work-arr">→</span>
-      </div>
-    </a>
-    -->
-
+<!-- ═══════════════════════════════════════
+     SECTION 1 — SILMERIA Intro
+     ═══════════════════════════════════════ -->
+<section class="section-intro" aria-labelledby="intro-heading">
+  <div class="intro-inner">
+    <p class="intro-eyebrow">Silmeria · Author</p>
+    <h1 id="intro-heading" class="intro-name char-scatter" data-scatter>Silmeria</h1>
+    <p class="intro-tagline">
+      Fan fiction, illustration, and printed works.<br>
+      Quiet stories about the people we keep choosing to see.
+    </p>
+    <!-- <div class="intro-divider" aria-hidden="true"></div> -->
   </div>
+</section>
 
-  <footer>Silmeria · 2026</footer>
+<!-- ═══════════════════════════════════════
+     SECTION 2 — Hero Image (Three.js reveal)
+     ═══════════════════════════════════════ -->
+<section class="section-hero">
+  <div id="hero-canvas-wrap">
+    <canvas id="hero-canvas"></canvas>
+  </div>
+  <div class="hero-text" id="hero-text">
+    <div class="hero-zh">观 测 者</div>
+    <div class="hero-en">Eyes On Me</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SECTION 3 — Eyes On Me Work (Saihoji-style)
+     ═══════════════════════════════════════ -->
+<section class="section-work" aria-labelledby="work-heading">
+  <div class="work-grid">
+    <div class="work-left">
+      <h2 id="work-heading" class="work-title char-scatter" data-scatter>EYES ON ME</h2>
+      <p class="work-zh">观 测 者</p>
+      <p class="work-desc">
+        An 80,000-word Ne Zha I &amp; II fan fiction.
+        A meditation on observation, free will,
+        and the quiet weight of being seen.
+      </p>
+      <p class="work-tag">Novel · 2026</p>
+    </div>
+    <div class="work-right">
+      <a href="https://silmariaz.github.io/eyes-on-me/" class="work-link-btn">
+        Enter the observation →
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>Silmeria · 2026</footer>
+
+<div id="scroll-indicator" style="
+  position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:0.6rem;
+  padding-bottom:0; z-index:50; pointer-events:none;
+  opacity:0; transition:opacity 1s ease;
+  ">
+  <span style="font-family:var(--mono);font-size:10px;letter-spacing:0.28em;color:var(--silver-mid);text-transform:lowercase;">scroll</span>
+  <div style="position:relative;width:1px;height:44px;overflow:hidden;background:rgba(106,112,128,0.3);">
+    <div id="scroll-line" style="
+    position:absolute;left:0;width:100%;height:50%;
+    background:linear-gradient(to bottom,transparent,#c8cdd8,transparent);
+    animation:scrollLine 1.8s ease-in-out infinite;
+    "></div>
+  </div>
 </div>
 
+<style>
+  @keyframes scrollLine {
+    0%   { top:-50%; }
+    100% { top:150%; }
+  }
+</style>
+
 <script>
-// Subtle starry background
-(function(){
-  var c = document.getElementById('stars');
-  if (!c) return;
-  var ctx = c.getContext('2d');
-  var stars = [];
-  function resize() {
-    c.width = window.innerWidth;
-    c.height = window.innerHeight;
-    stars = [];
-    var n = Math.floor((c.width * c.height) / 7000);
-    for (var i = 0; i < n; i++) {
-      stars.push({
-        x: Math.random() * c.width,
-        y: Math.random() * c.height,
-        r: Math.random() * 0.8 + 0.15,
-        a: Math.random() * 0.6 + 0.15,
-        spd: Math.random() * 0.0004 + 0.0001,
-        ph: Math.random() * Math.PI * 2
-      });
-    }
+  if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
   }
-  var frame = 0;
-  function draw() {
-    ctx.clearRect(0, 0, c.width, c.height);
-    frame++;
-    for (var i = 0; i < stars.length; i++) {
-      var s = stars[i];
-      var alpha = s.a * (0.6 + 0.4 * Math.sin(frame * s.spd * 60 + s.ph));
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(200,205,216,' + alpha + ')';
-      ctx.fill();
+  window.scrollTo(0, 0);
+
+  (function(){
+    var ind = document.getElementById('scroll-indicator');
+    if(!ind) return;
+  // Show after intro finishes
+    setTimeout(function(){ ind.style.opacity='1'; }, 2000);
+  // Hide on scroll
+    window.addEventListener('scroll', function(){
+      if(window.scrollY > 30){
+        ind.style.opacity = '0';
+      } else {
+        ind.style.opacity = '1';
+      }
+    }, { passive:true });
+  })();
+</script>
+
+<!-- ═══════════════════════════════════════
+     THREE.JS + SHADER
+     ═══════════════════════════════════════ -->
+<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+<script>
+// ─────────────────────────────────────────
+// Hero fog-reveal shader v4 — inlined
+// ─────────────────────────────────────────
+window.initHeroShader = function(canvas, imageSrc) {
+  const IMG_ASPECT = 3840 / 1758;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x3e3c3a, 1);
+  const scene = new THREE.Scene();
+  const camera = new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5, 0.1, 10);
+  camera.position.z = 1;
+
+  const vertexShader = `
+    varying vec2 vUv;
+    void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }
+  `;
+
+  const fragmentShader = `
+    precision highp float;
+    uniform sampler2D uTexture;
+    uniform float uTime, uRawTime;
+    uniform vec2  uResolution;
+    uniform float uImgAspect;
+    varying vec2 vUv;
+
+    float hash(vec2 p){ p=fract(p*vec2(127.1,311.7)); p+=dot(p,p+19.19); return fract(p.x*p.y); }
+    float noise(vec2 p){ vec2 i=floor(p),f=fract(p); f=f*f*(3.0-2.0*f);
+      return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y); }
+    float fbm(vec2 p){ float v=0.0,a=0.5; mat2 m=mat2(0.8,-0.6,0.6,0.8);
+      for(int i=0;i<6;i++){ v+=a*noise(p); p=m*p*2.1+vec2(1.7,9.2); a*=0.5; } return v; }
+    vec2 coverUv(vec2 uv,float ca,float ia){
+      vec2 s=(ca>ia)?vec2(1.0,ca/ia):vec2(ia/ca,1.0); return(uv-0.5)*s+0.5; }
+    float eio(float t){ return t<0.5?4.0*t*t*t:1.0-pow(-2.0*t+2.0,3.0)/2.0; }
+
+    void main(){
+      float ca=uResolution.x/uResolution.y;
+      vec2  pos=(vUv-0.5)*vec2(ca,1.0);
+      float dist=length(pos);
+      float maxR=length(vec2(ca*0.5,0.5));
+      float t=clamp(uTime,0.0,1.0);
+      float te = 1.0 - pow(1.0-t, 1.6);
+      float dr=uRawTime*0.05;
+
+      float fog1=fbm(vUv*2.2 + vec2(dr,       dr*0.3));
+      float fog2=fbm(vUv*4.5 + vec2(-dr*0.4,  dr*0.7));
+      float fog3=fbm(vUv*8.0 - vec2(dr*0.2,   dr*0.5));
+      float fogD=fog1*0.55+fog2*0.30+fog3*0.15;
+
+      float revealR=te*(maxR+0.30) - 0.15;
+
+      float bn1=(fbm(vUv*3.0 + vec2(dr*0.9, 0.0))    - 0.5);
+      float bn2=(fbm(vUv*6.5 + vec2(0.0,    dr*0.7))  - 0.5);
+      float bdelta=(bn1*0.65 + bn2*0.35)*0.30;
+      float feather=mix(0.20, 0.04, te);
+      float reveal=1.0-smoothstep(revealR-feather+bdelta, revealR+feather*0.3+bdelta, dist);
+      reveal *= smoothstep(0.0, 0.04, t);
+
+      float fogWave=0.0;
+      for(int i=1;i<=6;i++){
+        float wScale=1.0-float(i)*0.08;
+        float wR=te*wScale*(maxR+0.30);
+        float d=dist-wR;
+        float ring=exp(-d*d*22.0);
+        float amp=0.25*exp(-float(i-1)*0.45);
+        float ringVisible = smoothstep(0.05, 0.15, wR);
+        fogWave+=ring*amp*(1.0-reveal)*ringVisible;
+      }
+
+      float behind=max(0.0, revealR+bdelta-dist);
+      float sat=pow(smoothstep(0.0, 0.38, behind), 3.0);
+      for(int j=0;j<4;j++){
+        float wR2=te*(1.0-float(j+1)*0.09)*(maxR+0.30);
+        float d2=dist-wR2;
+        sat=max(sat, exp(-d2*d2*20.0)*0.35*reveal);
+      }
+      sat=clamp(sat,0.0,1.0);
+
+      float ws=0.016*(1.0-te*0.75);
+      vec2 wo=(vec2(fbm(vUv*3.0+vec2(dr,1.1)),fbm(vUv*3.0+vec2(4.9,dr)))-0.5)*2.0*ws;
+
+      vec2 safeDir = pos / max(dist, 0.06);
+      float ripple = 0.0;
+      float ringBright = 0.0;
+      float frontR = te*(maxR+0.30) - 0.15;
+
+      for(int w=0; w<6; w++){
+        float wR    = frontR - float(w)*0.062;
+        float d     = dist - wR;
+        float env   = exp(-d*d*300.0);
+        float wave  = env * sin(d * 38.0);
+        float amp   = 0.028 * exp(-float(w)*0.28);
+        ripple     += wave * amp;
+        ringBright += wave * amp * 2.5;
+      }
+
+      vec2 suv=clamp(coverUv(vUv+wo+safeDir*ripple,ca,uImgAspect),0.001,0.999);
+      vec4 img=texture2D(uTexture,suv);
+      float luma=dot(img.rgb,vec3(0.299,0.587,0.114));
+      vec3 imgC=mix(vec3(luma*0.72),img.rgb,sat);
+      imgC *= (1.0 + ringBright * reveal);
+      imgC *= (1.0-0.25*smoothstep(0.0,maxR,dist));
+
+      vec3 fogBlack = vec3(0.02, 0.02, 0.02);
+      vec3 fogGrey  = vec3(0.08, 0.08, 0.07);
+      float edgeGlow = smoothstep(0.18, 0.0, abs(dist - revealR));
+      vec3 fogBase   = mix(fogBlack, fogGrey, edgeGlow * 0.4 + fogD * 0.08);
+      vec3 fogCol=fogBase*(0.74+fogD*0.48)+vec3(fogWave*0.88,fogWave*0.85,fogWave*0.80);
+
+      float preReveal = smoothstep(revealR + 0.35, revealR - 0.05, dist) * (1.0 - reveal) * 0.28;
+      vec3 color=mix(fogCol, imgC, reveal + preReveal);
+      color*=mix(0.80,1.0,smoothstep(maxR*1.20,maxR*0.40,dist));
+      gl_FragColor=vec4(color,1.0);
     }
-    requestAnimationFrame(draw);
+  `;
+
+  const uniforms = {
+    uTexture:    { value: null },
+    uTime:       { value: 0.0 },
+    uRawTime:    { value: 0.0 },
+    uResolution: { value: new THREE.Vector2(window.innerWidth, Math.round(window.innerWidth/IMG_ASPECT)) },
+    uImgAspect:  { value: IMG_ASPECT },
+  };
+
+  const mat  = new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms });
+  scene.add(new THREE.Mesh(new THREE.PlaneGeometry(1,1), mat));
+
+  function resize(){
+    const w=window.innerWidth, h=Math.round(w/IMG_ASPECT);
+    renderer.setSize(w,h);
+    uniforms.uResolution.value.set(w*renderer.getPixelRatio(),h*renderer.getPixelRatio());
   }
-  window.addEventListener('resize', resize);
   resize();
-  draw();
+  window.addEventListener('resize', resize);
+
+  new THREE.TextureLoader().load(imageSrc, tex=>{
+    tex.minFilter=THREE.LinearFilter; tex.magFilter=THREE.LinearFilter;
+    uniforms.uTexture.value=tex;
+  });
+
+  const DURATION=3.0; let t0=null;
+  let started = false;
+
+  // Only start animating when the hero section scrolls into view
+  const heroSection = canvas.closest('.section-hero');
+  if (heroSection && 'IntersectionObserver' in window) {
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if (e.isIntersecting && !started) {
+          started = true;
+          t0 = null; // reset so DURATION starts from this moment
+          requestAnimationFrame(animate);
+          setTimeout(()=>document.getElementById('hero-text').classList.add('visible'), 300);
+        }
+      });
+    }, { threshold: 0.25 });
+    obs.observe(heroSection);
+  } else {
+    started = true;
+    requestAnimationFrame(animate);
+    setTimeout(()=>document.getElementById('hero-text').classList.add('visible'), 300);
+  }
+
+  function animate(ts){
+    if(!t0) t0=ts;
+    const e=(ts-t0)/1000;
+    uniforms.uRawTime.value=e;
+    uniforms.uTime.value=Math.min(e/DURATION,1.0);
+    renderer.render(scene,camera);
+    requestAnimationFrame(animate);
+  }
+
+  window.restartHeroReveal=function(){ t0=null; uniforms.uTime.value=0; uniforms.uRawTime.value=0; };
+};
+
+// ─────────────────────────────────────────
+// Initialize
+// ─────────────────────────────────────────
+window.initHeroShader(
+  document.getElementById('hero-canvas'),
+  'hero.png'
+);
+
+// ─────────────────────────────────────────
+// Char-scatter animation (Saihoji-style)
+// Each character starts at a random offset + scale,
+// then settles to final position when scrolled into view.
+// ─────────────────────────────────────────
+(function() {
+  const scatterTargets = document.querySelectorAll('[data-scatter]');
+
+  scatterTargets.forEach(el => {
+    const text = el.textContent;
+    el.innerHTML = ''; // clear
+
+    // Split into chars, wrap each in span.char
+    // Preserve spaces as non-breaking so layout doesn't collapse
+    const chars = Array.from(text);
+    chars.forEach((ch, i) => {
+      const span = document.createElement('span');
+      span.className = 'char';
+      span.textContent = ch === ' ' ? '\u00A0' : ch;
+
+      // Saihoji's English formula from their script.js:
+      // translate(${Math.random()*.4-.8}em, ${Math.pow(-1,i)*.4+.2*Math.random()}em) scale(${1.6+Math.random()})
+      const tx = (Math.random() * 0.4 - 0.8).toFixed(3);
+      const ty = (Math.pow(-1, i) * 0.4 + 0.2 * Math.random()).toFixed(3);
+      const sc = (1.6 + Math.random()).toFixed(3);
+      span.style.transform = `translate(${tx}em, ${ty}em) scale(${sc})`;
+
+      el.appendChild(span);
+    });
+  });
+
+  // IntersectionObserver: when a scatter target enters viewport,
+  // add the data-is-on-screen-once attribute which triggers the CSS transition
+  // back to transform: translate(0,0) scale(1).
+  if ('IntersectionObserver' in window) {
+    const scatterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Small per-char stagger by animating in one tick (via the default CSS transition)
+          entry.target.setAttribute('data-is-on-screen-once', 'true');
+          scatterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2, rootMargin: '-10% 0%' });
+
+    scatterTargets.forEach(el => scatterObserver.observe(el));
+  } else {
+    // No IntersectionObserver → just settle immediately
+    scatterTargets.forEach(el => el.setAttribute('data-is-on-screen-once', 'true'));
+  }
 })();
+
+// Trigger intro fade-in after name scatter animation completes
+// Cormorant scatter transition is 1.8s, so wait for that + small buffer
+var introName = document.querySelector('.intro-name');
+if (introName) {
+  var introObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        setTimeout(function() {
+          document.querySelectorAll('.intro-eyebrow, .intro-tagline, .intro-divider')
+            .forEach(function(el) { el.classList.add('intro-fade-in'); });
+        }, 1000); // 1.8s scatter + 200ms buffer
+        introObs.unobserve(introName);
+      }
+    });
+  }, { threshold: 0.2 });
+  introObs.observe(introName);
+}
 </script>
 
 </body>
