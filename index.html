@@ -113,6 +113,8 @@ html, body {
   position: relative;
   width: 100%;
   line-height: 0;
+
+  container-type: inline-size;
 }
 #hero-canvas {
   display: block;
@@ -133,7 +135,7 @@ html, body {
 .hero-text.visible { opacity: 1; }
 .hero-zh {
   font-family: var(--chinese);
-  font-size: clamp(11px, 0.9vw, 12px);
+  font-size: clamp(6px, 0.9cqw, 12px);
   letter-spacing: 0.45em;
   color: var(--silver-mid);
   text-shadow: 0 0 20px rgba(5,5,8,0.8), 0 0 40px rgba(5,5,8,0.6);
@@ -142,7 +144,7 @@ html, body {
 }
 .hero-en {
   font-family: var(--serif);
-  font-size: clamp(16px, 1.8vw, 20px);
+  font-size: clamp(10px, 1.8cqw, 20px);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--silver-mid);
